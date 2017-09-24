@@ -12,19 +12,25 @@ The repository can be accessed at http://localhost:8000
 
 
 ###Build a distibution for the sample function
+
+Install [anaconda](https://conda.io/docs/user-guide/install/index.html) or [miniconda](https://conda.io/miniconda.html)
+
+Install conda-build
+```bash
+$ conda install conda-build
+```
 See https://conda.io/docs/user-guide/tasks/build-packages/index.html
 
 
 ```bash
-$ conda-build sample #The build will output the location of the package. Or you can use --output-folder OUTPUT_FOLDER
+$ conda-build sample --output-folder functions
 ```
 
-###Publish the package to the server
+###Publish the package distribution for all platforms to the channel
 ```bash
 $ conda convert --platform all [path-to-tar.bz2-package] -o functions/
-```
-
-This may be required:  `conda index functions/osx-64 #or for target architectures` 
+$ conda index functions/osx-64 functions/linux-64 #index all if necessary
+``` 
 
 ###Install the package in a virtual environment
 
