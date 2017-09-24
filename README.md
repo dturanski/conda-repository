@@ -38,3 +38,9 @@ $ conda index functions/osx-64 functions/linux-64 #index all if necessary
 $ conda env create --file sample/environment.yml
 $ source activate sample-function
 ```
+### Perform a quick test
+
+```bash
+$ python -m sample.functions hello world
+$ source deactivate
+```

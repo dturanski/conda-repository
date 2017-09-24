@@ -24,4 +24,4 @@ def upper(data):
 
 if __name__ == '__main__':
     for arg in sys.argv:
-        upper(arg)
+        print(upper(arg))
