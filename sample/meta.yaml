@@ -1,0 +1,31 @@
+package:
+  name: sample
+  version: "1.0.0"
+
+source:
+#  git_rev:
+#  git_url:
+   path: .
+
+build:
+  number: 0
+  string: build
+
+
+requirements:
+  build:
+    - python
+    - setuptools
+
+
+  run:
+    - python
+
+test:
+  imports:
+    - sample
+
+about:
+  home:
+  license: Apache Software License
+  #license_file: LICENSE

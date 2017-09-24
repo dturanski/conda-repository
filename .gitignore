@@ -1,0 +1,15 @@
+.idea/
+*.pyc
+*.egg-info/
+MANIFEST
+build/
+dist/
+.DS_Store
+.eggs/
+noarch/
+functions/osx-64
+functions/linux-64
+functions/linux-32
+functions/win-32
+functions/win-64
+functions/noarch

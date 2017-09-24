@@ -1,0 +1,5 @@
+name: sample-function
+dependencies:
+  - sample
+channels:
+  - http://localhost:8000/functions
