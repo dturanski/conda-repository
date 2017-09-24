@@ -87,3 +87,9 @@ $kubectl get pods
 $kubectl cp functions [conda-repository-container]:/opt/functions
 ```
 
+### Run the sample as a Job
+```bash
+$ kubectl apply -f app/function-runner.yaml
+$ kubectl get pods -a
+$ kubectl logs [function-runner-container]
+```
