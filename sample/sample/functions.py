@@ -16,10 +16,18 @@ Copyright 2017 the original author or authors.
 __author__ = 'David Turanski'
 
 import sys
+PYTHON3 = sys.version_info >= (3, 0)
+
+if PYTHON3:
+    from functools import reduce
 
 
 def upper(data):
     return data.upper()
+
+
+def concat(*args):
+    return reduce(lambda x, y: x + '.' + y, args)
 
 
 if __name__ == '__main__':

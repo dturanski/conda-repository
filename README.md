@@ -4,9 +4,9 @@ Conda organizes repositories into namespaces called [channels](http://conda-test
 
 ### Start the container with a volume mounted on the functions directory.  
 ```bash
-$ docker build . --rm -t dturanski/conda-server
-$ docker volume create --opt type=none --opt device="$PWDsample" --opt o=bind functions
-$ docker run -d -it -p8000:8000 --mount source=functions,target=/opt/functions dturanski/conda-server
+$ docker build . --rm -t [docker-name]/conda-repository
+$ docker volume create --opt type=none --opt device="$PWD/functions" --opt o=bind functions
+$ docker run -d -it -p8000:8000 --mount source=functions,target=/opt/functions [docker-name]/conda-repository
 ```
 The repository can be accessed at http://localhost:8000
 
@@ -44,3 +44,16 @@ $ source activate sample-function
 $ python -m sample.functions hello world
 $ source deactivate
 ```
+
+## Deploy to Kubernetes
+
+* If you built the conda-repository image, docker push the image
+* edit conda.yaml to mach the image name
+
+###Upload the files
+
+```bash
+$kubectl apply -f conda.yaml
+$kubectl cp functions  [conda-repository-container]:/opt/functions
+```
+
