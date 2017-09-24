@@ -4,9 +4,9 @@ Conda organizes repositories into namespaces called [channels](http://conda-test
 
 ### Start the container with a volume mounted on the functions directory.  
 ```bash
-$ docker build . --rm -t [docker-name]/conda-repository
+$ docker build . --rm -t [docker-repo]/conda-repository
 $ docker volume create --opt type=none --opt device="$PWD/functions" --opt o=bind functions
-$ docker run -d -it -p8000:8000 --mount source=functions,target=/opt/functions [docker-name]/conda-repository
+$ docker run -d -it -p8000:8000 --mount source=functions,target=/opt/functions [docker-repo]/conda-repository
 ```
 The repository can be accessed at http://localhost:8000
 
@@ -45,15 +45,45 @@ $ python -m sample.functions hello world
 $ source deactivate
 ```
 
+##Function Runner
+
+This is a sample Python app that runs a function and args passed on the command line. The container uses the `conda` functions channel
+at `http://conda:8000/functions` to match the K8s service URL. To run it locally, edit `/etc/hosts` and add an entry for the container 
+host:
+
+`[container IpAddress]  conda` 
+
+To get the container IP address
+
+```bash
+$docker ps
+$ docker inspect [container-id] | grep IPAddress
+```
+
+The function runner sets the following environment variables:
+
+`ENV CHANNEL http://conda:8000/functions`
+`ENV PACKAGE_NAME="sample"`
+
+These values can be overridden on the command line. The package name is the name of a package that will be installed at run time from the channel, using
+`conda install`. This takes a few seconds for a small package like we have here. The fully qualified function name (prefixed with the module) is
+the first command line argument, the remaining arguments are passed as function arguments.
+
+```bash
+$ docker build --rm  app -t [docker-repo]/function-runner
+$ docker run -it [docker-repo]/function-runner functions.upper hello
+$ docker run -it [docker-repo]/function-runner functions.concat org springframework cloud function
+```
+
 ## Deploy to Kubernetes
 
-* If you built the conda-repository image, docker push the image
-* edit conda.yaml to mach the image name
+If you built the conda-repository image, docker push the image and edit conda.yaml to mach the image name
 
 ###Upload the files
 
 ```bash
 $kubectl apply -f conda.yaml
-$kubectl cp functions  [conda-repository-container]:/opt/functions
+$kubectl get pods
+$kubectl cp functions [conda-repository-container]:/opt/functions
 ```
 
