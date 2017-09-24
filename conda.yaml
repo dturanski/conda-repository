@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: conda
+    component: conda-repository
+  name: conda
+  namespace: default
+spec:
+  ports:
+  - port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: conda
+    component: conda-repository
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: conda
+    component: conda-repository
+  name: conda-repository
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: conda
+        component: conda-repository
+    spec:
+      containers:
+      - name: conda
+        image: dturanski/conda-repository
+        ports:
+        - containerPort: 8000
+
+
+
